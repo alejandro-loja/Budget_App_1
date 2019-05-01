@@ -1,8 +1,10 @@
 const router = require("express").Router();
-const billcontroller = require("../../controllers/billcontroller")
+const billcontroller = require("../../controllers/billcontroller");
+
 // Matches with "/api/bills"
 // gets all result, or post to create a record
-router.route("/")
+router
+    .route("/")
     .get(billcontroller.findAll)
     .post(billcontroller.create);
 

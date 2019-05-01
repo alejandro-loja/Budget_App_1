@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
 
 // creating scheme with mongoose for each added bill/subscription
@@ -14,7 +13,7 @@ const billSchema = new Schema({
     // less important info
     category: { type: String, required: false },
     informationBill: { type: String, required: false },
-    importance: {type: String, required: false}
+    importance: { type: String, required: false }
 });
 
 const Bills = mongoose.model("Bills", billSchema);

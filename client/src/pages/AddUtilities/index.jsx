@@ -9,53 +9,65 @@ import API from "../../utils/API";
 // import { Input, FormBtn } from "../components/Form";
 
 class Saved extends Component {
+  state = {
+    bills: {}
+    // title: "",
+    // authors: "",
+    // description: "",
+    // image: "",
+    // link: "",
+    // query: ""
+  };
 
-    state = {
-        bills: [],
-        // title: "",
-        // authors: "",
-        // description: "",
-        // image: "",
-        // link: "",
-        // query: ""
-    };
+  //boiler plate
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+    console.log(this.state);
+  };
 
-    //boiler plate
-    handleInputChange = event => {
-        const { name, value } = event.target;
-        this.setState({
-            [name]: value
-        });
-    };
+  componentDidMount() {
+    this.loadbills();
+  }
 
-    componentDidMount() {
-        this.loadbills();
-    };
+  loadbills = () => {
+    API.getBills()
+      .then(res => this.setState({ bills: res.data }))
+      .catch(err => console.log(err));
+    // debugger;
+  };
 
-    loadbills = () => {
-        API.getBills()
-            .then(res => this.setState({ bills: res.data }))
-            .then(console.log(this.state))
-            .catch(err => console.log(err));
-    };
+  // deleteBook = id => {
+  //     API.deleteBook(id)
+  //         .then(res => this.loadBooks())
+  //         .catch(err => console.log(err));
+  // };
 
-    // deleteBook = id => {
-    //     API.deleteBook(id)
-    //         .then(res => this.loadBooks())
-    //         .catch(err => console.log(err));
-    // };
-
-    render() {
-        return (
-            <div>
-                Add Utilities
-                {this.state.bills ? <p>NO RESULTS</p> : <p>this.state.bills[0].serviceName</p>}
-            </div>)
-
-    }
-
-};
-
-
+  render() {
+    return (
+      <div>
+        Add Utilities
+        {this.state.bills[0] ? (
+          this.state.bills.map(bill => {
+            return (
+              <ul key={bill._id}>
+                <li>{bill.serviceName}</li>
+                <li>{bill.monthlyCostCents}</li>
+                <li>{bill.currency}</li>
+                <li>{bill.dateDue}</li>
+                <li>{bill.informationBill}</li>
+                <li>{bill.importance}</li>
+              </ul>
+            );
+          })
+        ) : (
+          <p>NO RESULTS</p>
+        )}
+      </div>
+    );
+  }
+}
 
 export default Saved;
