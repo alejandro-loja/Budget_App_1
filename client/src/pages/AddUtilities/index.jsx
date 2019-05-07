@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
+import moment from "moment";
 // import booksAPI from "../utils/gbAPI";
 // import Jumbotron from "../components/Jumbotron";
 // import Container from "../components/Container";
@@ -39,32 +40,82 @@ class Saved extends Component {
     // debugger;
   };
 
-  // deleteBook = id => {
-  //     API.deleteBook(id)
-  //         .then(res => this.loadBooks())
-  //         .catch(err => console.log(err));
-  // };
+  centsToDollars = cents => {
+    let inUSDDollars = cents / 100;
+    inUSDDollars = "$" + inUSDDollars;
+    return inUSDDollars;
+  };
 
-  render() {
+  determineImportance = importance => {
+    const level = importance.toLowerCase();
+    switch (level) {
+      case "high":
+        return (
+          <div className="alert alert-danger" role="alert">
+            {importance}
+          </div>
+        );
+        break;
+      case "medium":
+        return (
+          <div className="alert alert-primary" role="alert">
+            {importance}
+          </div>
+        );
+        break;
+      case "low":
+        return (
+          <div className="alert alert-secondary" role="alert">
+            {importance}
+          </div>
+        );
+        break;
+      default:
+        return <div>{importance}</div>;
+    }
+  };
+
+  renderEachPurchase = () => {
     return (
-      <div>
-        Add Utilities
+      <ul className="list-group">
         {this.state.bills[0] ? (
           this.state.bills.map(bill => {
+            const {
+              _id,
+              serviceName,
+              monthlyCostCents,
+              currency,
+              dateDue,
+              informationBill,
+              importance
+            } = bill;
             return (
-              <ul key={bill._id}>
-                <li>{bill.serviceName}</li>
-                <li>{bill.monthlyCostCents}</li>
-                <li>{bill.currency}</li>
-                <li>{bill.dateDue}</li>
-                <li>{bill.informationBill}</li>
-                <li>{bill.importance}</li>
-              </ul>
+              <li key={_id} className="list-group-item">
+                <h2>{serviceName}</h2>
+                <h3>
+                  {this.centsToDollars(monthlyCostCents)} {currency}
+                </h3>
+                <p> Occurance: {moment(dateDue).format("MMM Do")}</p>
+                <p>{informationBill}</p>
+                {this.determineImportance(importance)}
+              </li>
             );
           })
         ) : (
           <p>NO RESULTS</p>
         )}
+      </ul>
+    );
+  };
+
+  render() {
+    return (
+      <div className="container">
+        <div className="jumbotron">
+          <br />
+          <h1 className="display-4">Add Utilities</h1>
+        </div>
+        {this.renderEachPurchase()}
       </div>
     );
   }
