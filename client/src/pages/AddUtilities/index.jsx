@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
 import moment from "moment";
+import FormToAddUtility from "../../components/FormToAddUT";
 // import booksAPI from "../utils/gbAPI";
 // import Jumbotron from "../components/Jumbotron";
 // import Container from "../components/Container";
@@ -44,6 +45,10 @@ class Saved extends Component {
     let inUSDDollars = cents / 100;
     inUSDDollars = "$" + inUSDDollars;
     return inUSDDollars;
+  };
+
+  sayHello = () => {
+    console.log("Hello World");
   };
 
   determineImportance = importance => {
@@ -110,12 +115,19 @@ class Saved extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="jumbotron">
+      <div className="container pt-4">
+        <div className="jumbotron row">
           <br />
           <h1 className="display-4">Add Utilities</h1>
         </div>
-        {this.renderEachPurchase()}
+        <div className="row">
+          <div className="col">{this.renderEachPurchase()}</div>
+          <div className="col">
+            <h4>Add a Utility</h4>
+            <FormToAddUtility onClick={this.sayHello} />
+            {/* <SaveButton onClick={this.sayHello} /> */}
+          </div>
+        </div>
       </div>
     );
   }
